@@ -36,7 +36,6 @@ public class UserController {
 		System.out.println("Received login request: " + loginRequest); // Log the request object
 
 		try {
-			// Call the login method in the UserService
 			User user = userService.logInUser(loginRequest.getUserName(), loginRequest.getUserPassword());
 			if (user != null) {
 				return ResponseEntity.ok("Login successful!");
@@ -53,10 +52,8 @@ public class UserController {
 	@PostMapping("/update")
 	public ResponseEntity<?> updateUser(@RequestBody User updateRequest) {
 		try {
-			// Call the service method to update user information
 			User updatedUser = userService.updateUser(updateRequest);
 
-			// Check if the user was successfully updated and return response
 			if (updatedUser != null) {
 				return ResponseEntity.ok("User information updated successfully!");
 			} else {

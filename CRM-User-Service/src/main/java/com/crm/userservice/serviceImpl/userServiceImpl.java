@@ -22,27 +22,22 @@ public class userServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public String signUpUser(User user) {
-		// Check if email is already taken
 		if (isEmailAlreadyExists(user.getUserEmail())) {
-			throw new IllegalArgumentException("Email is already takenasikfdchadshik!");
+			throw new IllegalArgumentException("Email is already taken!");
 		}
 
-		// Check if username is already taken
 		if (isUsernameAlreadyExists(user.getUserName())) {
-			throw new IllegalArgumentException("Username is already takenahdsklfhadsh!");
+			throw new IllegalArgumentException("Username is already taken!");
 		}
 
-		// Check if phone number is already registered
 		if (isPhoneNumberAlreadyExists(user.getNumber())) {
 			throw new IllegalArgumentException("Phone number is already registered!");
 		}
 
-		// Encode password and set join date
 		String password = user.getUserPassword();
 		user.setUserPassword(passwordEncoder.encode(password));
 		user.setJoinDate(LocalDate.now());
 
-		// Save user in the repository
 		userRepository.save(user);
 
 		return "User registered successfully!";
@@ -51,15 +46,15 @@ public class userServiceImpl implements UserService {
 
 
 	private boolean isEmailAlreadyExists(String email) {
-		return userRepository.existsByUserEmail(email); // Correct method
+		return userRepository.existsByUserEmail(email);
 	}
 
 	private boolean isUsernameAlreadyExists(String userName) {
-		return userRepository.existsByUserName(userName); // Correct method
+		return userRepository.existsByUserName(userName);
 	}
 
 	private boolean isPhoneNumberAlreadyExists(String number) {
-		return userRepository.existsByNumber(number); // Correct method
+		return userRepository.existsByNumber(number);
 	}
 
 
@@ -67,27 +62,22 @@ public class userServiceImpl implements UserService {
 
 	@Override
 	public User logInUser(String userName, String userPassword) {
-		// Find user by username
 		User user = userRepository.findByUserName(userName);
 
-		// Validate password (assuming plain-text here for simplicity, use hashing in production)
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-		// Validate password (using hashed password comparison)
 		if (user != null && passwordEncoder.matches(userPassword, user.getUserPassword())) {
 			return user;
 		} else {
-			return null; // Invalid username/password
+			return null;
 		}
 	}
 
 	@Override
 	public User updateUser(User updateRequest) {
-		// Retrieve user from the database using username (or user id)
 		User existingUser = userRepository.findByUserName(updateRequest.getUserName());
 
 		if (existingUser != null) {
-			// Update the fields that are provided in the request
 			if (updateRequest.getUserEmail() != null) {
 				existingUser.setUserEmail(updateRequest.getUserEmail());
 			}
@@ -97,15 +87,12 @@ public class userServiceImpl implements UserService {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 			if (updateRequest.getUserPassword() != null && !updateRequest.getUserPassword().isEmpty()) {
-				// Hash the new password before saving
 				String hashedPassword = passwordEncoder.encode(updateRequest.getUserPassword());
 				existingUser.setUserPassword(hashedPassword);
 			}
 
-			// Save the updated user to the database
 			return userRepository.save(existingUser);
 		} else {
-			// User not found
 			return null;
 		}
 	}
