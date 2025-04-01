@@ -6,7 +6,8 @@ import com.crm.userservice.model.User;
 
 @Service
 public interface UserService  {
-	
-	public User signUpUser(User user);
 
+	public String signUpUser(User user);
+	public User logInUser(String userName, String userPassword);
+	public User updateUser(User user);
 }

@@ -31,5 +31,42 @@ public class UserController {
 		}
 
 	}
+	@PostMapping("/login")
+	public ResponseEntity<?> logInUser(@RequestBody User loginRequest) {
+		System.out.println("Received login request: " + loginRequest); // Log the request object
+
+		try {
+			// Call the login method in the UserService
+			User user = userService.logInUser(loginRequest.getUserName(), loginRequest.getUserPassword());
+			if (user != null) {
+				return ResponseEntity.ok("Login successful!");
+			} else {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + ex.getMessage());
+		}
+
+	}
+
+	@PostMapping("/update")
+	public ResponseEntity<?> updateUser(@RequestBody User updateRequest) {
+		try {
+			// Call the service method to update user information
+			User updatedUser = userService.updateUser(updateRequest);
+
+			// Check if the user was successfully updated and return response
+			if (updatedUser != null) {
+				return ResponseEntity.ok("User information updated successfully!");
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + ex.getMessage());
+		}
+	}
+
 
 }
