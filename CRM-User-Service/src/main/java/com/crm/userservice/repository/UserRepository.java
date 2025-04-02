@@ -8,9 +8,11 @@ import com.crm.userservice.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	public User findByUserEmail(String email);
+	public boolean existsByUserEmail(String email);
 
-	public User findByUserName(String userName);
+	public boolean existsByUserName(String userName);
 
-	public User findByNumber(String number);
+	public boolean existsByNumber(String number);
+
+	public  User findByUserName(String username);
 }
