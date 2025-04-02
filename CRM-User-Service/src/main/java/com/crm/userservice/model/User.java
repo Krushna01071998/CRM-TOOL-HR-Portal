@@ -22,6 +22,14 @@ import lombok.Setter;
 @Table(name = "User")
 public class User {
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -35,15 +43,15 @@ public class User {
 
 	@Column(name = "password")
 	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must be at least 8 characters long")
-	private String password;
+	private String userPassword;
 
 	@Column(name = "number")
 	@Pattern(regexp = "^.{10}$", message = "Must be exactly 10 characters")
 	private String number;
 
 	@Column(name = "creationtime")
-	private LocalDate creationTime;
-	
+	private LocalDate joinDate;
+
 	@Column(name = "role")
 	private String role;
 
