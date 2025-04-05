@@ -93,7 +93,7 @@ public class UserController {
 	public ResponseEntity<String> deleteUser(@RequestBody User deleteRequest) {
 		String currentUserRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
 		if (!currentUserRole.contains("ROLE_ADMIN")) {
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admins can delete users.");
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admins can delete user accounts.");
 		}
 
 		try {
