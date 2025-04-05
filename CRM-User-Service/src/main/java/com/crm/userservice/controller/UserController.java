@@ -67,12 +67,12 @@ public class UserController {
 		if (!currentUserRole.contains("ROLE_EMPLOYEE")) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only employee can update.");
 		}
-//			String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-//
-//			// User can only update their own details
-//			if (!updateRequest.getUserName().equals(currentUserName)) {
-//				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only update your own details.");
-//			}
+			String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+
+			// User can only update their own details
+			if (!updateRequest.getUserName().equals(currentUserName)) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only update your own details.");
+			}
 
 		try {
 			User updatedUser = userService.updateUser(updateRequest);

@@ -2,6 +2,7 @@ package com.crm.userservice.serviceImpl;
 
 import java.time.LocalDate;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -71,7 +72,7 @@ public class userServiceImpl implements UserService {
 			return null;
 		}
 	}
-
+@Transactional
 	@Override
 	public User updateUser(User updateRequest) {
 		User existingUser = userRepository.findByUserName(updateRequest.getUserName());
@@ -93,7 +94,7 @@ public class userServiceImpl implements UserService {
 			return null;
 		}
 	}
-
+	@Transactional
 	@Override
 	public String deleteUser(User deleteRequest) {
 		User existingUser= userRepository.findByUserName(deleteRequest.getUserName());
