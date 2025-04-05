@@ -1,5 +1,6 @@
 package com.crm.userservice.service;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import com.crm.userservice.model.User;
@@ -7,7 +8,10 @@ import com.crm.userservice.model.User;
 @Service
 public interface UserService  {
 
-	public String signUpUser(User user);
-	public User logInUser(String userName, String userPassword);
-	public User updateUser(User user);
-}
+	String signUpUser(User user);
+	User logInUser(String userName, String userPassword);
+	User updateUser(User user);
+	 String deleteUser(User user);
+
+	}
+

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManagerFactory;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,13 +25,7 @@ import lombok.Setter;
 @Table(name = "User")
 public class User {
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,12 +39,13 @@ public class User {
 	private String userEmail;
 
 	@Column(name = "password")
-	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Password must be at least 8 characters long")
+	@Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{8,}$", message = "Password must be at least 8 characters long and contain both letters and digits.")
 	private String userPassword;
 
 	@Column(name = "number")
-	@Pattern(regexp = "^.{10}$", message = "Must be exactly 10 characters")
+	@Pattern(regexp = "^[\\d\\s\\-\\(\\)]{10,15}$", message = "Must be between 10 and 15 digits with optional spaces, hyphens, or parentheses")
 	private String number;
+
 
 	@Column(name = "creationtime")
 	private LocalDate joinDate;

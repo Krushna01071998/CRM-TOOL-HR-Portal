@@ -3,6 +3,8 @@ package com.crm.userservice.serviceImpl;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,6 @@ import com.crm.userservice.model.User;
 import com.crm.userservice.repository.UserRepository;
 import com.crm.userservice.service.UserService;
 
-import jakarta.transaction.Transactional;
 
 @Service
 public class userServiceImpl implements UserService {
@@ -20,7 +21,6 @@ public class userServiceImpl implements UserService {
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	@Override
-	@Transactional
 	public String signUpUser(User user) {
 		if (isEmailAlreadyExists(user.getUserEmail())) {
 			throw new IllegalArgumentException("Email is already taken!");
@@ -62,12 +62,11 @@ public class userServiceImpl implements UserService {
 
 	@Override
 	public User logInUser(String userName, String userPassword) {
-		User user = userRepository.findByUserName(userName);
+		User exsistingUser = userRepository.findByUserName(userName);
 
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-		if (user != null && passwordEncoder.matches(userPassword, user.getUserPassword())) {
-			return user;
+		if (exsistingUser != null && passwordEncoder.matches(userPassword, exsistingUser.getUserPassword())) {
+			return exsistingUser;
 		} else {
 			return null;
 		}
@@ -84,11 +83,9 @@ public class userServiceImpl implements UserService {
 			if (updateRequest.getNumber() != null) {
 				existingUser.setNumber(updateRequest.getNumber());
 			}
-			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 			if (updateRequest.getUserPassword() != null && !updateRequest.getUserPassword().isEmpty()) {
-				String hashedPassword = passwordEncoder.encode(updateRequest.getUserPassword());
-				existingUser.setUserPassword(hashedPassword);
+				existingUser.setUserPassword( passwordEncoder.encode(updateRequest.getUserPassword()));
 			}
 
 			return userRepository.save(existingUser);
@@ -96,6 +93,18 @@ public class userServiceImpl implements UserService {
 			return null;
 		}
 	}
+
+	@Override
+	public String deleteUser(User deleteRequest) {
+		User existingUser= userRepository.findByUserName(deleteRequest.getUserName());
+		if (existingUser != null){
+			userRepository.deleteByUserName(existingUser.getUserName());
+			return "User Deleted Successfully";
+		}else {
+			return "User not found";
+		}
+	}
+
 }
 
 
