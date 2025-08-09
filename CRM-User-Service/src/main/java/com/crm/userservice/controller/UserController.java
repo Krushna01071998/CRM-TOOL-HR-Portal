@@ -43,7 +43,7 @@ public class UserController {
 		}
 	}
 	@PostMapping("/create-employee")
-	public ResponseEntity<String> signUpUser1(@Valid @RequestBody User user, BindingResult result) {
+	public ResponseEntity<String> signUpUser2(@Valid @RequestBody User user, BindingResult result) {
 		String currentUserRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
 		if (!currentUserRole.contains("ROLE_ADMIN")) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admins can create new users.");
