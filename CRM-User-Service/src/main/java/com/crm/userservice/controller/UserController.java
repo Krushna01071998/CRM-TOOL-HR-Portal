@@ -42,6 +42,29 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + ex.getMessage());
 		}
 	}
+	@PostMapping("/create-employee")
+	public ResponseEntity<String> signUpUser2(@Valid @RequestBody User user, BindingResult result) {
+		String currentUserRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
+		if (!currentUserRole.contains("ROLE_ADMIN")) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admins can create new users.");
+		}
+
+		if (result.hasErrors()) {
+			StringBuilder errorMessage = new StringBuilder("Validation failed: ");
+			result.getAllErrors().forEach(error ->
+					errorMessage.append(error.getDefaultMessage()).append("; ")
+			);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());
+		}
+
+		try {
+
+			return ResponseEntity.ok(userService.signUpUser(user));
+		} catch (IllegalArgumentException ex) {
+			ex.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + ex.getMessage());
+		}
+	}
 
 	@PostMapping("/login")
 	public ResponseEntity<?> logInUser(@RequestBody User loginRequest) {
