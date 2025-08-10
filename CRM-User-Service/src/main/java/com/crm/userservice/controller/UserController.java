@@ -43,7 +43,18 @@ public class UserController {
 		}
 	}
 	@PostMapping("/create-employee")
-	public ResponseEntity<String> signUpUser2(@Valid @RequestBody User user, BindingResult result) {
+	public ResponseEntity<String> signUpUser3ms-MacBook-Air:CRM-TOOL-HR-Portal shubhaph$ git status
+	On branch SP
+	Changes not staged for commit:
+			(use "git add <file>..." to update what will be committed)
+			(use "git restore <file>..." to discard changes in working directory)
+	modified:   CRM-User-Service/src/main/java/com/crm/userservice/controller/UserController.java
+
+	no changes added to commit (use "git add" and/or "git commit -a")
+	Shubhams-MacBook-Air:CRM-TOOL-HR-Portal shubhaph$ git diff "Shubham's-Branch"..SP
+	Shubhams-MacBook-Air:CRM-TOOL-HR-Portal shubhaph$ git diff SP.."Shubham's-Branch"
+	Shubhams-MacBook-Air:CRM-TOOL-HR-Portal shubhaph$
+			(@Valid @RequestBody User user, BindingResult result) {
 		String currentUserRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
 		if (!currentUserRole.contains("ROLE_ADMIN")) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only admins can create new users.");
